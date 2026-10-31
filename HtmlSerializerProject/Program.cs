@@ -5,7 +5,7 @@ var serializer = new HtmlSerializer();
 var html = await serializer.Load("https://example.com");
 var dom = serializer.Serialize(html);
 
-var selector = Selector.FromQueryString("div p");
+var selector = Selector.FromQueryString("body p");
 var result = dom.FindElements(selector);
 
 Console.WriteLine($"Found {result.Count} elements");
