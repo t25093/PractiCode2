@@ -1,7 +1,5 @@
 ﻿using System.Net.Http;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace HtmlSerializerProject
 {
@@ -43,22 +41,24 @@ namespace HtmlSerializerProject
 
                 var content = part.Substring(1, part.Length - 2).Trim();
 
-                if (content.Length > 0)
+                if (content.Length == 0 || content.StartsWith("!"))
                     continue;
 
-                var firstWord = content.Split(' ')[0].ToLower().TrimEnd('/');
+                var firstWord = content.Split(' ')[0].ToLower();
 
-                if (part == "/html")
+                if (firstWord == "/html")
                     break;
 
-                if (part.StartsWith("/"))
+                if (firstWord.StartsWith("/"))
                 {
                     if (current.Parent != null)
                         current = current.Parent;
                     continue;
                 }
 
-                if (!HtmlHelper.Instance.HtmlTags.Contains(firstWord) || HtmlHelper.Instance.HtmlVoidTags.Contains(firstWord))
+                firstWord = firstWord.TrimEnd('/');
+
+                if (!HtmlHelper.Instance.HtmlTags.Contains(firstWord))
                     continue;
 
                 var element = new HtmlElement
@@ -77,7 +77,7 @@ namespace HtmlSerializerProject
                     var attrName = match.Groups[1].Value.ToLower();
                     var attrValue = match.Groups[2].Value.Trim('"', '\'');
 
-                    element.Attributes.Add($"{attrName}=\"{attrValue}\"");
+                    element.Attributes[attrName] = attrValue;
 
                     if (attrName == "class")
                         element.Classes = attrValue

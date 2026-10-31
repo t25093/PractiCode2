@@ -13,10 +13,10 @@ namespace HtmlSerializerProject
 
         private HtmlHelper()
         {
-            var tagsJson = File.ReadAllText("Seed/HtmlTags.json");
+            var tagsJson = File.ReadAllText("seed/HtmlTags.json");
             HtmlTags = JsonSerializer.Deserialize<string[]>(tagsJson);
 
-            var voidTagsJson = File.ReadAllText("Seed/HtmlVoidTags.json");
+            var voidTagsJson = File.ReadAllText("seed/HtmlVoidTags.json");
             HtmlVoidTags = JsonSerializer.Deserialize<string[]>(voidTagsJson);
         }
     }
